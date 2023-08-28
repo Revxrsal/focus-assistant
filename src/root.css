@@ -79,4 +79,8 @@ main {
         @apply bg-stone-600 transition-colors hover:bg-stone-500;
     }
 
+
+    .h-with-titlebar {
+        height: calc(100vh - 30px);
+    }
 }
