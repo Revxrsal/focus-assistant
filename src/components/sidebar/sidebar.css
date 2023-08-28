@@ -1,0 +1,20 @@
+.center {
+    @apply items-center content-center;
+}
+
+.sidebar {
+    @apply fixed select-none w-[300px] h-screen my-auto align-middle bg-stone-300 dark:bg-stone-800;
+}
+
+.sidebar-item {
+    @apply mx-4 my-2 hover:bg-sky-500 dark:hover:bg-sky-700 px-4 py-3 center rounded-md
+    cursor-pointer transition hover:text-stone-200;
+}
+
+.disabled-sidebar-item {
+    @apply mx-4 my-2 px-4 py-3 center rounded-md opacity-40 transition cursor-not-allowed;
+}
+
+.sidebar-subitem {
+    @apply sidebar-item p-2 dark:hover:bg-sky-800;
+}

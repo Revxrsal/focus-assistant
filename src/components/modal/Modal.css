@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    --spacing-gutter: 4rem;
+    --spacing-gutter-sm: 2rem;
+}
+
+.modal {
+    @apply bg-stone-200 dark:bg-stone-900 text-stone-800 dark:text-stone-200 inset-0 overflow-y-auto fixed z-[9999];
+}
+
+.modal header {
+    @apply overflow-y-auto p-8 pb-0;
+}
+
+.modalBody {
+    @apply overflow-y-auto p-8;
+}
+
+.modal header {
+    @apply items-center bg-inherit flex flex-row flex-nowrap gap-4
+    justify-between sticky top-0;
+}
+
+@layer components {
+    .modalBackdrop {
+        @apply bg-stone-600 opacity-60 left-1/2 top-1/2 min-h-screen min-w-full overflow-hidden fixed z-[9999];
+        transform: translate(-50%, -50%);
+    }
+}
+
+@media (min-width: 768px) {
+    .modal {
+        @apply rounded-2xl max-w-3xl min-h-fit left-1/2 overflow-y-auto fixed top-1/2;
+        max-height: calc(100vh - (var(--spacing-gutter-sm) * 2));
+        transform: translate(-50%, -50%);
+        width: calc(100vw - (var(--spacing-gutter-sm) * 2));
+    }
+}
