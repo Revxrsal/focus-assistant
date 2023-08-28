@@ -3,7 +3,7 @@
 }
 
 .sidebar {
-    @apply fixed select-none w-[300px] h-screen my-auto align-middle bg-stone-300 dark:bg-stone-800;
+    @apply top-0 fixed select-none w-[300px] h-screen my-auto align-middle bg-stone-300 dark:bg-stone-800;
 }
 
 .sidebar-item {
