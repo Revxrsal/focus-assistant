@@ -25,7 +25,8 @@
         "minimize": true,
         "unmaximize": true,
         "unminimize": true,
-        "startDragging": true
+        "startDragging": true,
+        "setFullscreen": true
       },
       "dialog": {
         "open": true
@@ -47,7 +48,7 @@
         "icons/icon.ico"
       ],
       "identifier": "io.github.revrsal",
-      "longDescription": "",
+      "longDescription": "A simple but powerful pomodoro-like application that blocks any distracting apps during focus sessions",
       "macOS": {
         "entitlements": null,
         "exceptionDomain": "",

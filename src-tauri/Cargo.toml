@@ -21,6 +21,7 @@ serde = { version = "1.0", features = ["derive"] }
 [dependencies.tauri]
 version = "1.4.0"
 features = [
+    "window-set-fullscreen",
     "window-start-dragging",
     "window-show",
     "window-minimize",
