@@ -5,6 +5,7 @@ import Sidebar from "~/components/sidebar/Sidebar";
 import { preferences } from "~/util/preferences";
 import { startTimer, timer } from "~/util/timer";
 import "./root.css";
+import TitleBar from "~/components/titlebars/TitleBar";
 
 export default function Root() {
     let bodyElem: HTMLBodyElement | undefined;
@@ -34,10 +35,15 @@ export default function Root() {
             <Body ref={bodyElem}>
                 <Suspense>
                     <ErrorBoundary>
-                        <Sidebar />
-                        <Routes>
-                            <FileRoutes />
-                        </Routes>
+                        <div class={"overflow-hidden"}>
+                            <TitleBar />
+                            <Sidebar />
+                            <div class={"mt-[30px] overflow-auto h-with-titlebar"}>
+                                <Routes>
+                                    <FileRoutes />
+                                </Routes>
+                            </div>
+                        </div>
                     </ErrorBoundary>
                 </Suspense>
                 <Scripts />
