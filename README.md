@@ -6,11 +6,11 @@ A simple but powerful pomodoro-like application that blocks any distracting apps
 ## Features
 1. Customize a focus period anywhere from 5 minutes to 4 hours
 2. Customize the fierceness of the focus session:
-  - Allow pausing
-  - Allow cancelling
-  - Allow changing settings
-  - (WIP) Allow the task manager
-  - (WIP) Allow the terminal
+    - Allow pausing
+    - Allow cancelling
+    - Allow changing settings
+    - (WIP) Allow the task manager
+    - (WIP) Allow the terminal
 3. Customize the apps you can use during a focus session
 4. (WIP) Customize the websites you can access during a focus session
 5. A clean, minimalist and elegant UI
