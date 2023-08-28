@@ -1,12 +1,13 @@
 use std::ptr::null_mut;
-use winapi::um::winuser::GetForegroundWindow;
+
 use winapi::{
     shared::{
-        minwindef::{DWORD, WPARAM},
+        minwindef::DWORD,
         windef::HWND,
     },
-    um::winuser::{IsIconic, IsWindowVisible, SendMessageW, SC_MINIMIZE, WM_SYSCOMMAND},
+    um::winuser::{IsIconic, IsWindowVisible},
 };
+use winapi::um::winuser::GetForegroundWindow;
 
 use crate::util::pids::{get_app_exe_name, get_window_process_id, map_exes_to_pids};
 
