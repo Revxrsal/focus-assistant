@@ -16,7 +16,17 @@
       "notification": {
         "all": true
       },
-    
+      "window": {
+        "all": false,
+        "close": true,
+        "hide": true,
+        "show": true,
+        "maximize": true,
+        "minimize": true,
+        "unmaximize": true,
+        "unminimize": true,
+        "startDragging": true
+      },
       "dialog": {
         "open": true
       }
@@ -68,7 +78,8 @@
         "resizable": true,
         "title": "Focus Assistant",
         "width": 1000,
-        "minWidth": 1000
+        "minWidth": 1000,
+        "decorations": false
       }
     ]
   }

@@ -2,9 +2,9 @@
 name = "app"
 version = "0.1.0"
 description = "A Tauri App"
-authors = ["you"]
-license = ""
-repository = ""
+authors = ["Revxrsal"]
+license = "MIT"
+repository = "https://github.com/Revxrsal/focus-assistant"
 default-run = "app"
 edition = "2021"
 rust-version = "1.60"
@@ -17,10 +17,34 @@ tauri-build = { version = "1.4.0", features = [] }
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.4.0", features = [ "notification-all", "dialog-open"] }
-winapi = { version = "0.3.9", features = ["minwindef", "winuser", "windef", "tlhelp32"] }
-tokio = { version = "1.32.0", features = ["full"] }
-anyhow = "1.0.75"
+
+[dependencies.tauri]
+version = "1.4.0"
+features = [
+    "window-start-dragging",
+    "window-show",
+    "window-minimize",
+    "window-hide",
+    "window-maximize",
+    "window-unminimize",
+    "window-unmaximize",
+    "window-close",
+    "notification-all",
+    "dialog-open"
+]
+
+[dependencies.tokio]
+version = "1.32.0"
+features = ["full"]
+
+[dependencies.winapi]
+version = "0.3.9"
+features = [
+    "minwindef",
+    "winuser",
+    "windef",
+    "tlhelp32"
+]
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem and the built-in dev server is disabled.
