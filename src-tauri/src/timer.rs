@@ -34,7 +34,6 @@ pub async fn start_timer(duration: u32, app_handle: AppHandle) {
     let (mut rx, abort_handle) = schedule_timer(duration);
     app_handle.once_global("cancelTimer", move |_event| {
         abort_handle.abort();
-        // rx.close();
     });
     tokio::spawn(async move {
         while let Some(value) = rx.recv().await {
