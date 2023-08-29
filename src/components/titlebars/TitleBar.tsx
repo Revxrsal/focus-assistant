@@ -3,6 +3,7 @@ import { appWindow } from "@tauri-apps/api/window";
 import { FaSolidMinus, FaSolidXmark } from "solid-icons/fa";
 import { TbRectangle } from "solid-icons/tb";
 import "./TitleBar.css";
+import { isFocusing } from "~/util/timer";
 
 function Minimize() {
     return <TitleBarButton onClick={() => appWindow.minimize()}>
@@ -18,8 +19,13 @@ function ToggleMaximize() {
 
 function Close() {
     return <TitleBarButton
-        onClick={() => appWindow.close()}
-        class={"hover:bg-red-500 dark:hover:bg-red-500"}
+        onClick={async () => {
+            if (!isFocusing())
+                await appWindow.close();
+            else
+                await appWindow.minimize();
+        }}
+        class={`hover:bg-red-500 dark:hover:bg-red-500`}
     >
         <FaSolidXmark />
     </TitleBarButton>;
