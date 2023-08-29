@@ -1,5 +1,5 @@
 import { Show } from "solid-js";
-import { cancelTimer, pauseTimer, startTimer, timer } from "~/util/timer";
+import { cancelTimer, isFocusing, pauseTimer, startTimer, timer } from "~/util/timer";
 import TimerSlider from "~/components/TimerSlider";
 import { formatTime } from "~/util/util";
 import Column from "~/components/layout/Column";
@@ -64,7 +64,7 @@ export default function Home() {
                 Focus session
             </h1>
             <Spacer class={"my-4"} />
-            <Show when={timer.state != "not started"} fallback={<NotStartedForm />}>
+            <Show when={isFocusing()} fallback={<NotStartedForm />}>
                 <RunningForm />
             </Show>
         </main>

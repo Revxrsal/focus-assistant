@@ -2,7 +2,7 @@ import { reconcile } from "solid-js/store";
 import { CancelReason, startTimer as nativeStartTimer, StopFn } from "~/bindings/timer";
 import { minimizeUnallowedWindows } from "~/bindings/window";
 import createPersistedStore from "~/util/createPersistedStore";
-import { allowedApps } from "./options";
+import { allowedApps, options } from "./options";
 import { startFocus, stopFocus } from "~/bindings/focus";
 import { createEffect } from "solid-js";
 import { sendNotification } from "@tauri-apps/api/notification";
@@ -29,11 +29,15 @@ export const [timer, setTimer] = createPersistedStore<Timer>(
 let stopFn: StopFn | undefined = undefined;
 
 createEffect(async () => {
-    if (timer.state == "not started")
-        await stopFocus();
-    else
+    if (isFocusing())
         await startFocus();
+    else
+        await stopFocus();
 });
+
+export function isFocusing() {
+    return timer.state != "not started";
+}
 
 function onTimerFinished() {
     setTimer(reconcile(createDefaultTimer()));
@@ -75,5 +79,15 @@ export function cancelTimer() {
 
 function tick(value: number) {
     setTimer("time", value);
-    minimizeUnallowedWindows(allowedApps);
+    let apps = [...allowedApps];
+    if (options.allowTaskManager) {
+        apps.push("Taskmgr.exe");
+    }
+    if (options.allowTerminal) {
+        apps.push("WindowsTerminal.exe");
+        apps.push("cmd.exe");
+        apps.push("OpenConsole.exe");
+        apps.push("powershell.exe");
+    }
+    minimizeUnallowedWindows(apps);
 }

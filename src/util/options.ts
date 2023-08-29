@@ -1,5 +1,5 @@
 import createPersistedStore from "~/util/createPersistedStore";
-import { timer } from "./timer";
+import { isFocusing } from "./timer";
 
 export interface TimerOptions {
     allowPause: boolean;
@@ -36,5 +36,5 @@ export function createDefaultOptions(): TimerOptions {
 }
 
 export function canOpenSettings(): boolean {
-    return options.allowSettings || timer.state == "not started";
+    return options.allowSettings || !isFocusing();
 }
