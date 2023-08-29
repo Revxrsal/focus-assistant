@@ -29,8 +29,6 @@ pub enum CancelReason {
 ///  2. cancelTimer: Emitted (or received) when the timer is cancelled.
 #[tauri::command]
 pub async fn start_timer(duration: u32, app_handle: AppHandle) {
-    // Sleeping for 1s fixes so many weird bugs. It works, don't touch it.
-    // tokio::time::sleep(Duration::from_secs(1)).await;
     let (mut rx, abort_handle) = schedule_timer(duration);
     app_handle.once_global("cancelTimer", move |_event| {
         abort_handle.abort();
