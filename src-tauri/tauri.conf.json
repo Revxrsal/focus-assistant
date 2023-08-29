@@ -7,7 +7,7 @@
     "distDir": "../dist/public"
   },
   "package": {
-    "productName": "focus-assistant",
+    "productName": "Focus Assistant",
     "version": "0.1.0"
   },
   "tauri": {
