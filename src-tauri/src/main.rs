@@ -8,7 +8,7 @@ use tauri::{Manager, RunEvent, State};
 use tokio::sync::Mutex;
 
 use app::FocusOptions;
-use focus::{FocusState, start_focus, stop_focus};
+use focus::{start_focus, stop_focus};
 use http::start_http_server;
 use minimizer::minimize_unallowed_windows;
 use timer::start_timer;
