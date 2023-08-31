@@ -1,38 +1,15 @@
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::atomic::Ordering;
 
-use tauri::State;
-
-#[derive(Default)]
-pub struct FocusState {
-    is_focusing: AtomicBool,
-}
-
-impl FocusState {
-    pub fn new() -> FocusState {
-        return FocusState::default();
-    }
-
-    pub fn focus(&self) {
-        self.is_focusing.store(true, Ordering::SeqCst);
-    }
-
-    pub fn unfocus(&self) {
-        self.is_focusing.store(false, Ordering::SeqCst);
-    }
-
-    pub fn is_focusing(&self) -> bool {
-        return self.is_focusing.load(Ordering::SeqCst);
-    }
-}
+use crate::IS_FOCUSING;
 
 #[tauri::command]
-pub async fn start_focus(focus_state: State<'_, FocusState>) -> Result<(), ()> {
-    focus_state.focus();
+pub async fn start_focus() -> Result<(), ()> {
+    IS_FOCUSING.store(true, Ordering::SeqCst);
     Ok(())
 }
 
 #[tauri::command]
-pub async fn stop_focus(focus_state: State<'_, FocusState>) -> Result<(), ()> {
-    focus_state.unfocus();
+pub async fn stop_focus() -> Result<(), ()> {
+    IS_FOCUSING.store(false, Ordering::SeqCst);
     Ok(())
 }
