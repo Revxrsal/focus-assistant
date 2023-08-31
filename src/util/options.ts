@@ -1,5 +1,7 @@
 import createPersistedStore from "~/util/createPersistedStore";
 import { isFocusing } from "./timer";
+import { createEffect } from "solid-js";
+import { setAllowedApps as nativeSetAllowedApps, setAllowedWebsites as nativeSetAllowedWebsites } from "~/bindings/app";
 
 export interface TimerOptions {
     allowPause: boolean;
@@ -24,6 +26,9 @@ export const [options, setOptions] = createPersistedStore<TimerOptions>(
     "fc.timerOptions",
     createDefaultOptions
 );
+
+createEffect(async () => await nativeSetAllowedApps(allowedApps));
+createEffect(async () => await nativeSetAllowedWebsites(allowedWebsites));
 
 export function createDefaultOptions(): TimerOptions {
     return {
