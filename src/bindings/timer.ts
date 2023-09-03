@@ -22,6 +22,7 @@ export interface TickTimerPayload {
 /**
  * Starts the timer.
  *
+ * @param seconds Timer duration
  * @param onTick invoked on every second
  * @param onCancelled Invoked when the timer is cancelled.
  * @returns The function to cancel the timer.
@@ -42,6 +43,7 @@ export async function startTimer(
             onTick(event.payload.newValue as number);
         }
     );
+
     await once<CancelTimerPayload>("cancelTimer", (event) => {
         unlistenToTick();
         onCancelled(event.payload.reason);
