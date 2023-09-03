@@ -20,14 +20,14 @@ export interface TickTimerPayload {
 }
 
 /**
- * Starts the timer.
+ * Creates a timer.
  *
  * @param seconds Timer duration
  * @param onTick invoked on every second
  * @param onCancelled Invoked when the timer is cancelled.
  * @returns The function to cancel the timer.
  */
-export async function startTimer(
+export async function createTimer(
     seconds: number,
     onTick: (value: number) => void,
     onCancelled: (reason: CancelReason) => void

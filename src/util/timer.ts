@@ -1,5 +1,5 @@
 import { reconcile } from "solid-js/store";
-import { CancelReason, startTimer as nativeStartTimer, StopFn } from "~/bindings/timer";
+import { CancelReason, createTimer as nativeStartTimer, StopFn } from "~/bindings/timer";
 import { minimizeUnallowedWindows } from "~/bindings/window";
 import createPersistedStore from "~/util/createPersistedStore";
 import { allowedApps, options } from "./options";
