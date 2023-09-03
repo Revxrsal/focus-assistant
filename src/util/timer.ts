@@ -65,7 +65,7 @@ export function startTimer() {
 
 export function pauseTimer() {
     setTimer("state", "paused");
-    stopFn?.("paused");
+    stopTimer("paused");
 }
 
 function stopTimer(reason?: CancelReason) {
