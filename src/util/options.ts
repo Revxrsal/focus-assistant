@@ -11,7 +11,6 @@ export interface TimerOptions {
     allowTerminal: boolean;
 }
 
-// prettier-ignore
 export const [allowedWebsites, setAllowedWebsites] = createPersistedStore<string[]>(
     "fc.allowedWebsites",
     () => []
