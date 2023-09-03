@@ -4,3 +4,4 @@ pub fn trim_null_char(value: &str) -> &str {
 }
 
 pub mod pids;
+pub mod remove_item;
