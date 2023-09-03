@@ -45,7 +45,9 @@ features = [
     "minwindef",
     "winuser",
     "windef",
-    "tlhelp32"
+    "tlhelp32",
+    "processthreadsapi",
+    "psapi"
 ]
 
 [features]
