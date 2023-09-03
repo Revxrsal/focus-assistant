@@ -4,7 +4,7 @@
 use std::sync::{Arc, atomic::AtomicBool};
 use std::sync::atomic::Ordering::SeqCst;
 
-use tauri::{Manager, RunEvent, State};
+use tauri::RunEvent;
 use tokio::sync::Mutex;
 
 use app::FocusOptions;
@@ -14,14 +14,8 @@ use minimizer::minimize_unallowed_windows;
 use timer::start_timer;
 
 use crate::app::{
-    add_app,
-    add_website,
-    get_allowed_apps,
-    get_allowed_websites,
-    remove_app,
-    remove_website,
-    set_allowed_apps,
-    set_allowed_websites,
+    add_app, add_website, get_allowed_apps, get_allowed_websites, remove_app, remove_website,
+    set_allowed_apps, set_allowed_websites,
 };
 
 mod app;
@@ -49,16 +43,12 @@ async fn main() {
             remove_website,
             get_allowed_websites,
             set_allowed_websites,
-
             add_app,
             remove_app,
             get_allowed_apps,
             set_allowed_apps,
-
             minimize_unallowed_windows,
-
             start_timer,
-
             start_focus,
             stop_focus
         ])
@@ -73,7 +63,7 @@ async fn main() {
         })
         .build(tauri::generate_context!())
         .expect("error while running tauri application");
-    app.run(|app_handle, event| match event {
+    app.run(|_app_handle, event| match event {
         RunEvent::ExitRequested { api, .. } => {
             if IS_FOCUSING.load(SeqCst) {
                 api.prevent_exit();
