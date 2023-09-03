@@ -1,14 +1,18 @@
+use std::path::PathBuf;
+use std::ptr::null_mut;
 use std::{ffi::OsString, os::windows::prelude::OsStringExt};
 
+use winapi::um::handleapi::CloseHandle;
+use winapi::um::processthreadsapi::OpenProcess;
+use winapi::um::psapi::GetModuleFileNameExW;
+use winapi::um::winnt::{PROCESS_QUERY_INFORMATION, PROCESS_VM_READ};
 use winapi::{
-    shared::{minwindef::{DWORD, MAX_PATH}, windef::HWND},
-    um::{tlhelp32::{
-        CreateToolhelp32Snapshot, Process32FirstW, Process32NextW, PROCESSENTRY32W,
-        TH32CS_SNAPPROCESS,
-    }, winuser::GetWindowThreadProcessId},
+    shared::{
+        minwindef::{DWORD, MAX_PATH},
+        windef::HWND,
+    },
+    um::winuser::GetWindowThreadProcessId,
 };
-
-use super::trim_null_char;
 
 /// Returns the name of the focus-assistant app.
 pub fn get_app_exe_name() -> String {
@@ -19,44 +23,32 @@ pub fn get_app_exe_name() -> String {
         .unwrap();
 }
 
-pub fn get_window_process_id(handle: HWND) -> DWORD {
+pub fn get_window_executable(handle: HWND) -> Option<String> {
     let mut process_id: DWORD = 0;
     unsafe {
         GetWindowThreadProcessId(handle, &mut process_id);
-    }
-    process_id
-}
-
-pub fn map_exes_to_pids(exes: Vec<&str>) -> Vec<DWORD> {
-    let mut pids: Vec<DWORD> = Vec::new();
-    let mut process_entry: PROCESSENTRY32W = PROCESSENTRY32W {
-        dwSize: std::mem::size_of::<PROCESSENTRY32W>() as DWORD,
-        cntUsage: 0,
-        th32ProcessID: 0,
-        th32DefaultHeapID: 0,
-        th32ModuleID: 0,
-        cntThreads: 0,
-        th32ParentProcessID: 0,
-        pcPriClassBase: 0,
-        dwFlags: 0,
-        szExeFile: [0; MAX_PATH],
-    };
-    unsafe {
-        let snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-        if Process32FirstW(snapshot, &mut process_entry) == 1 {
-            loop {
-                let exe_name = OsString::from_wide(&process_entry.szExeFile);
-                if let Some(exe_name) = exe_name.to_str() {
-                    if exes.contains(&trim_null_char(exe_name)) {
-                        pids.push(process_entry.th32ProcessID);
-                    }
-                }
-
-                if Process32NextW(snapshot, &mut process_entry) != 1 {
-                    break;
-                }
-            }
+        if process_id == 0 {
+            return None;
         }
+        let process_handle =
+            OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, 0, process_id);
+        if process_handle.is_null() {
+            return None;
+        }
+        let mut buffer: Vec<u16> = vec![0; MAX_PATH];
+        let buffer_size = buffer.len() as u32;
+        let result =
+            GetModuleFileNameExW(process_handle, null_mut(), buffer.as_mut_ptr(), buffer_size);
+        if result != 0 {
+            let executable_name = OsString::from_wide(&buffer[..result as usize]);
+            let path = PathBuf::from(executable_name);
+            // let executable_name = executable_name.to_string_lossy();
+            CloseHandle(process_handle);
+            return path
+                .file_name()
+                .map(|name| name.to_string_lossy().into_owned());
+        }
+        CloseHandle(process_handle);
     }
-    pids
+    return None;
 }
