@@ -9,7 +9,7 @@ use tauri::RunEvent;
 
 use http::start_http_server;
 use minimizer::minimize_unallowed_windows;
-use timer::start_timer;
+use timer::create_timer;
 
 use crate::focus::{
     commands::{
@@ -50,7 +50,7 @@ async fn main() {
 
             minimize_unallowed_windows,
 
-            start_timer,
+            create_timer,
 
             start_focus,
             stop_focus

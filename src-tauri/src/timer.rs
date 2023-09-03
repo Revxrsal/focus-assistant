@@ -28,7 +28,7 @@ pub enum CancelReason {
 ///  1. tickTimer: Invoked every time the tick timer changes.
 ///  2. cancelTimer: Emitted (or received) when the timer is cancelled.
 #[tauri::command]
-pub async fn start_timer(duration: u32, app_handle: AppHandle) {
+pub async fn create_timer(duration: u32, app_handle: AppHandle) {
     let (mut rx, abort_handle) = schedule_timer(duration);
     app_handle.once_global("cancelTimer", move |_event| {
         abort_handle.abort();

@@ -32,7 +32,7 @@ export async function createTimer(
     onTick: (value: number) => void,
     onCancelled: (reason: CancelReason) => void
 ): Promise<StopFn> {
-    await invoke("start_timer", { duration: seconds });
+    await invoke("create_timer", { duration: seconds });
     const stopFn = (reason: CancelReason) => {
         emit("cancelTimer", { reason });
     };
