@@ -3,5 +3,5 @@ pub fn trim_null_char(value: &str) -> &str {
     value.trim_end_matches(char::from(0))
 }
 
-pub mod pids;
+pub mod processes;
 pub mod remove_item;

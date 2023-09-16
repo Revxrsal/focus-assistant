@@ -11,3 +11,15 @@ export async function setAllowedWebsites(value: string[]) {
         value
     });
 }
+
+export async function setTerminal(value: boolean) {
+    await invoke("set_terminal", {
+        value
+    });
+}
+
+export async function setTaskManager(value: boolean) {
+    await invoke("set_task_manager", {
+        value
+    });
+}

@@ -1,6 +1,7 @@
 use std::path::PathBuf;
 use std::ptr::null_mut;
 use std::{ffi::OsString, os::windows::prelude::OsStringExt};
+use once_cell::sync::Lazy;
 
 use winapi::um::handleapi::CloseHandle;
 use winapi::um::processthreadsapi::OpenProcess;
@@ -14,14 +15,17 @@ use winapi::{
     um::winuser::GetWindowThreadProcessId,
 };
 
+pub const TASK_MANAGER: &'static str = "Taskmgr.exe";
+pub const WINDOWS_EXPLORER: &'static str = "explorer.exe";
+
 /// Returns the name of the focus-assistant app.
-pub fn get_app_exe_name() -> String {
-    return std::env::current_exe()
+pub static APP_NAME: Lazy<String> = Lazy::new(|| {
+    std::env::current_exe()
         .ok()
         .and_then(|pb| pb.file_name().map(|s| s.to_os_string()))
         .and_then(|s| s.into_string().ok())
-        .unwrap();
-}
+        .unwrap()
+});
 
 pub fn get_window_executable(handle: HWND) -> Option<String> {
     let mut process_id: DWORD = 0;
