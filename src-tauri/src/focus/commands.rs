@@ -1,3 +1,4 @@
+use std::sync::Arc;
 use std::sync::atomic::Ordering;
 
 use parking_lot::RwLock;
@@ -8,7 +9,7 @@ use crate::focus::{FocusStore, IS_FOCUSING};
 #[tauri::command]
 pub async fn set_allowed_websites(
     value: Vec<String>,
-    store: State<'_, RwLock<FocusStore>>,
+    store: State<'_, Arc<RwLock<FocusStore>>>,
 ) -> Result<(), ()> {
     let mut options = store.write();
     options.allowed_websites = value;
@@ -18,7 +19,7 @@ pub async fn set_allowed_websites(
 #[tauri::command]
 pub async fn set_allowed_apps(
     value: Vec<String>,
-    store: State<'_, RwLock<FocusStore>>,
+    store: State<'_, Arc<RwLock<FocusStore>>>,
 ) -> Result<(), ()> {
     let mut options = store.write();
     options.allowed_apps = value;
@@ -28,7 +29,7 @@ pub async fn set_allowed_apps(
 #[tauri::command]
 pub async fn set_task_manager(
     value: bool,
-    store: State<'_, RwLock<FocusStore>>,
+    store: State<'_, Arc<RwLock<FocusStore>>>,
 ) -> Result<(), ()> {
     let mut options = store.write();
     options.allow_task_manager = value;
@@ -38,7 +39,7 @@ pub async fn set_task_manager(
 #[tauri::command]
 pub async fn set_terminal(
     value: bool,
-    store: State<'_, RwLock<FocusStore>>,
+    store: State<'_, Arc<RwLock<FocusStore>>>,
 ) -> Result<(), ()> {
     let mut options = store.write();
     options.allow_terminal = value;

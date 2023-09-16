@@ -5,7 +5,7 @@ use std::sync::Arc;
 use std::sync::atomic::Ordering::SeqCst;
 
 use parking_lot::RwLock;
-use tauri::RunEvent;
+use tauri::{Manager, RunEvent};
 
 use http::start_http_server;
 use minimizer::minimize_unallowed_windows;
@@ -25,7 +25,7 @@ use crate::focus::{
 };
 
 mod minimizer;
-mod timer;
+mod timer   ;
 mod util;
 mod http;
 mod focus;
@@ -33,14 +33,9 @@ mod focus;
 #[tokio::main]
 async fn main() {
     let focus_options = Arc::new(RwLock::new(FocusStore::default()));
-    {
-        let focus_options = Arc::clone(&focus_options);
-        tokio::spawn(async move {
-            start_http_server(focus_options).await;
-        });
-    }
+
     let app = tauri::Builder::default()
-        .manage(focus_options)
+        .manage(Arc::clone(&focus_options))
         .invoke_handler(tauri::generate_handler![
 
             set_allowed_websites,
@@ -66,6 +61,16 @@ async fn main() {
         })
         .build(tauri::generate_context!())
         .expect("error while running tauri application");
+    {
+        let focus_options = Arc::clone(&focus_options);
+        let app_handle = app.app_handle();
+        tokio::spawn(async move {
+            start_http_server(
+                focus_options,
+                app_handle
+            ).await;
+        });
+    }
     app.run(|_app_handle, event| match event {
         RunEvent::ExitRequested { api, .. } => {
             if IS_FOCUSING.load(SeqCst) {

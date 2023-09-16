@@ -16,6 +16,7 @@ impl FocusStore {
     pub fn allowed_websites(&self) -> &Vec<String> {
         &self.allowed_websites
     }
+
     pub fn allowed_apps(&self) -> &Vec<String> {
         &self.allowed_apps
     }
