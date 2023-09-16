@@ -5,7 +5,7 @@ export async function getCurrentTab(): Promise<Tab> {
 }
 
 export async function canAccessWebsite(website: string): Promise<boolean> {
-    return fetch("http://localhost:4455/access", {
+    return fetch("http://localhost:4455/canAccessWebsite", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({website})
