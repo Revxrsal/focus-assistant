@@ -23,3 +23,9 @@ export async function setTaskManager(value: boolean) {
         value
     });
 }
+
+export async function onWebsiteAddedThroughExtension(callback: (website: string) => void): Promise<UnlistenFn> {
+    return listen("websiteAddedThroughExtension", event => {
+        callback(event.payload as string);
+    });
+}

@@ -1,13 +1,13 @@
-use std::sync::Arc;
 use std::sync::atomic::Ordering;
 
 use axum::extract::State;
 use axum::http::StatusCode;
 use axum::Json;
-use parking_lot::RwLock;
 use serde::Deserialize;
+use tauri::{AppHandle, Manager};
 
-use crate::focus::{FocusStore, IS_FOCUSING};
+use crate::focus::IS_FOCUSING;
+use crate::http::ServerState;
 
 #[derive(Deserialize)]
 pub struct AddWebsite {
@@ -15,12 +15,16 @@ pub struct AddWebsite {
 }
 
 pub async fn add_website(
-    State(options): State<Arc<RwLock<FocusStore>>>,
+    State(state): State<ServerState>,
     Json(payload): Json<AddWebsite>,
 ) -> (StatusCode, Json<()>) {
     if IS_FOCUSING.load(Ordering::SeqCst) {
         return (StatusCode::ACCEPTED, Json(()));
     }
-    options.write().allowed_websites_mut().push(payload.website);
+    state
+        .app_handle
+        .emit_all("websiteAddedThroughExtension", &payload.website)
+        .unwrap();
+    state.focus_options.write().allowed_websites_mut().push(payload.website);
     (StatusCode::ACCEPTED, Json(()))
 }

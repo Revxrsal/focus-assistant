@@ -6,6 +6,7 @@ use axum::Json;
 use parking_lot::RwLock;
 use serde::{Deserialize, Serialize};
 use crate::focus::{FocusStore, IS_FOCUSING};
+use crate::http::ServerState;
 
 #[derive(Deserialize)]
 pub struct CanAccessWebsite {
@@ -19,13 +20,13 @@ pub struct CanAccessWebsiteResp {
 }
 
 pub async fn can_access_website(
-    State(options): State<Arc<RwLock<FocusStore>>>,
+    State(state): State<ServerState>,
     Json(payload): Json<CanAccessWebsite>,
 ) -> (StatusCode, Json<CanAccessWebsiteResp>) {
     if !IS_FOCUSING.load(Ordering::SeqCst) {
         return (StatusCode::ACCEPTED, Json(CanAccessWebsiteResp { can_access: true }));
     }
-    let can_access = options.read()
+    let can_access = state.focus_options.read()
         .allowed_websites()
         .iter()
         .any(|v| payload.website.to_lowercase().contains(&v.to_lowercase()));
