@@ -12,6 +12,7 @@ export type TimerState = "not started" | "paused" | "running";
 export interface Timer {
     state: TimerState;
     time: number;
+    end?: number;
 }
 
 export function createDefaultTimer(): Timer {
@@ -49,7 +50,12 @@ function onTimerFinished() {
 
 export function startTimer() {
     stopTimer();
-    setTimer("state", "running");
+    const endDate = new Date()
+    endDate.setSeconds(endDate.getSeconds() + timer.time)
+    setTimer({
+        state: "running",
+        end: endDate.getTime()
+    });
     nativeStartTimer(timer.time, tick, (reason) => {
         switch (reason) {
             case "finished":

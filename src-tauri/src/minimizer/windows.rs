@@ -22,7 +22,6 @@ pub fn minimize_focus(allowed_apps: &Vec<String>) {
             return;
         }
         if let Some(name) = get_window_executable(active) {
-            println!("Name: {name}");
             if allowed_apps.contains(&name) {
                 return;
             }
@@ -37,8 +36,7 @@ pub fn minimize_focus(allowed_apps: &Vec<String>) {
             }
             if name == TASK_MANAGER {
                 // The Task manager should have been inside the allowed_options.
-                let result = SendMessageW(active, WM_SYSCOMMAND, SC_CLOSE, 0);
-                println!("{result}");
+                SendMessageW(active, WM_SYSCOMMAND, SC_CLOSE, 0);
                 return;
             }
 
