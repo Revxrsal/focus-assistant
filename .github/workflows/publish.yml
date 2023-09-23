@@ -5,14 +5,38 @@ on:
       - release
 
 jobs:
+  simple:
+    strategy:
+      fail-fast: false
+      matrix:
+        #        platform: [macos-latest, ubuntu-20.04, windows-latest]
+        platform: [ windows-latest ]
+
+    name: Test `cargo check/test/build` on ${{ matrix.platform }}
+    runs-on: ${{ matrix.platform }}
+
+    env:
+      CARGO_TERM_COLOR: always
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - run: rustup toolchain install stable --profile minimal --no-self-update
+
+      - uses: ./
+
+      - run: |
+          cargo check
+          cargo test
+          cargo build --release
   publish-tauri:
     permissions:
       contents: write
     strategy:
       fail-fast: false
       matrix:
-#        platform: [macos-latest, ubuntu-20.04, windows-latest]
-        platform: [windows-latest]
+        #        platform: [macos-latest, ubuntu-20.04, windows-latest]
+        platform: [ windows-latest ]
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -23,6 +47,9 @@ jobs:
           version: 8
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
+
+
+
       - name: install dependencies (ubuntu only)
         if: matrix.platform == 'ubuntu-20.04'
         run: |
