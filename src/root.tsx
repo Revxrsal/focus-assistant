@@ -1,16 +1,26 @@
 // @refresh reload
 import { onMount, Suspense } from "solid-js";
-import { Body, ErrorBoundary, FileRoutes, Head, Html, Meta, Routes, Scripts, Title } from "solid-start";
+import { Body, ErrorBoundary, FileRoutes, Head, Html, Link, Meta, Routes, Scripts, Title } from "solid-start";
 import Sidebar from "~/components/sidebar/Sidebar";
 import { preferences } from "~/util/preferences";
-import { startTimer, timer } from "~/util/timer";
+import { cancelTimer, setTimer, startTimer, timer } from "~/util/timer";
 import "./root.css";
 import TitleBar from "~/components/titlebars/TitleBar";
 
 export default function Root() {
     let bodyElem: HTMLBodyElement | undefined;
     onMount(() => {
-        if (timer.state == "running") startTimer();
+        if (timer.state == "running") {
+            if (timer.end) {
+                const now = new Date().getTime()
+                if (timer.end > now) {
+                    setTimer("time", Math.round((timer.end - now) / 1000))
+                    startTimer();
+                } else {
+                    cancelTimer()
+                }
+            }
+        }
         if (bodyElem) {
             bodyElem.classList.add("transition-colors");
             bodyElem.classList.add("duration-300");
@@ -49,5 +59,5 @@ export default function Root() {
                 <Scripts />
             </Body>
         </Html>
-    );
+);
 }
