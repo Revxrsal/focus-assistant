@@ -1,4 +1,5 @@
 import { invoke } from "@tauri-apps/api";
+import { listen, UnlistenFn } from "@tauri-apps/api/event";
 
 export async function setAllowedApps(value: string[]) {
     await invoke("set_allowed_apps", {

@@ -1,7 +1,11 @@
 import createPersistedStore from "~/util/createPersistedStore";
 import { isFocusing } from "./timer";
 import { createEffect } from "solid-js";
-import { setAllowedApps as nativeSetAllowedApps, setAllowedWebsites as nativeSetAllowedWebsites } from "~/bindings/app";
+import {
+    onWebsiteAddedThroughExtension,
+    setAllowedApps as nativeSetAllowedApps,
+    setAllowedWebsites as nativeSetAllowedWebsites, setTaskManager, setTerminal
+} from "~/bindings/app";
 
 export interface TimerOptions {
     allowPause: boolean;
@@ -31,8 +35,8 @@ createEffect(async () => await nativeSetAllowedWebsites(allowedWebsites));
 createEffect(async () => await setTerminal(options.allowTerminal));
 createEffect(async () => await setTaskManager(options.allowTaskManager));
 
+// noinspection JSIgnoredPromiseFromCall
 onWebsiteAddedThroughExtension(website => {
-    console.log("Adding website", website);
     setAllowedWebsites(v => [...v, website])
 });
 
